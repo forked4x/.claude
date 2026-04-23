@@ -5,6 +5,12 @@ SEP=" · "
 FIVE_HOUR=$((5 * 3600))
 SEVEN_DAY=$((7 * 86400))
 
+ESC=$'\033'
+C_GREEN="${ESC}[32m"
+C_YELLOW="${ESC}[33m"
+C_RED="${ESC}[31m"
+C_RESET="${ESC}[0m"
+
 input=$(cat)
 
 if ! command -v jq >/dev/null 2>&1 || ! printf '%s' "$input" | jq -e . >/dev/null 2>&1; then
@@ -82,12 +88,14 @@ now=$(date +%s)
 
 render_window() {
     local label=$1 path=$2 window=$3
-    local pct reset slot remaining elapsed elapsed_pct
+    local pct reset slot remaining elapsed elapsed_pct pct_round color diff
     pct=$(j ".rate_limits.${path}.used_percentage")
     [[ -z "$pct" ]] && return
-    slot="${label} $(bar "$pct") $(round "$pct")%"
+
     reset=$(j ".rate_limits.${path}.resets_at")
     reset=${reset%%.*}
+    elapsed_pct=""
+    remaining=""
     if [[ -n "$reset" ]]; then
         remaining=$(( reset - now ))
         (( remaining < 0 )) && remaining=0
@@ -95,6 +103,23 @@ render_window() {
         (( elapsed < 0 )) && elapsed=0
         (( elapsed > window )) && elapsed=$window
         elapsed_pct=$(round "100*$elapsed/$window")
+    fi
+
+    pct_round=$(round "$pct")
+    color=""
+    if [[ -n "$elapsed_pct" ]]; then
+        diff=$(( pct_round - elapsed_pct ))
+        if (( diff <= -10 )); then
+            color=$C_GREEN
+        elif (( diff >= 10 )); then
+            color=$C_RED
+        else
+            color=$C_YELLOW
+        fi
+    fi
+
+    slot="${label} $(bar "$pct") ${color}${pct_round}%${color:+$C_RESET}"
+    if [[ -n "$reset" ]]; then
         slot+=" $(humanize "$remaining") [${elapsed_pct}%]"
     fi
     out+="${SEP}${slot}"
