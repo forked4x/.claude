@@ -1,12 +1,22 @@
 {
+  "skipDangerousModePermissionPrompt": true,
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true,
+  "cleanupPeriodDays": 1000,
   "permissions": {
     "defaultMode": "plan"
   },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh",
+    "padding": 2
+  },
   "enabledPlugins": {
-    "lua-lsp@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
     "php-lsp@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-code-plugins": {
@@ -15,11 +25,5 @@
         "repo": "anthropics/claude-code"
       }
     }
-  },
-  "skipDangerousModePermissionPrompt": true,
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh",
-    "padding": 2
   }
 }
