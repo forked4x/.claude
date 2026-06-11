@@ -1,1 +1,1 @@
-![statusline screenshot](https://github.com/user-attachments/assets/053cd832-db54-4083-9a71-6970c394dfeb)
+![statusline screenshot](https://github.com/user-attachments/assets/86e1e0d2-fac9-4bb4-acc4-d38376f2dfab)
