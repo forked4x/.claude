@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BAR_WIDTH=8
+BAR_WIDTH=5
 SEP=" · "
 FIVE_HOUR=$((5 * 3600))
 SEVEN_DAY=$((7 * 86400))
@@ -127,5 +127,26 @@ render_window() {
 
 render_window "5h" "five_hour" "$FIVE_HOUR"
 render_window "7d" "seven_day" "$SEVEN_DAY"
+
+render_cost() {
+    local cache="${TMPDIR:-/tmp}/claude-statusline-agentsview-cost"
+    local cost="" today_cost total_cost
+    if [[ -n $(find "$cache" -mmin -1 2>/dev/null) ]]; then
+        cost=$(<"$cache")
+    elif command -v uvx >/dev/null 2>&1; then
+        read -r today_cost total_cost < <(
+            uvx agentsview usage daily --agent claude --json 2>/dev/null |
+            jq -r --arg d "$(date +%Y-%m-%d)" \
+                '[([.daily[] | select(.date == $d) | .totalCost] | add // 0), (.totals.totalCost // 0)] | @tsv' 2>/dev/null
+        )
+        if [[ -n "$total_cost" ]]; then
+            cost=$(LC_NUMERIC=C printf '$%.2f/$%.2f' "$today_cost" "$total_cost")
+        fi
+        printf '%s' "$cost" > "$cache"
+    fi
+    [[ -n "$cost" ]] && out+="${SEP}${cost}"
+}
+
+render_cost
 
 printf '%s\n' "$out"
