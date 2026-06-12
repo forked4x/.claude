@@ -140,7 +140,7 @@ render_cost() {
                 '[([.daily[] | select(.date == $d) | .totalCost] | add // 0), (.totals.totalCost // 0)] | @tsv' 2>/dev/null
         )
         if [[ -n "$total_cost" ]]; then
-            cost=$(LC_NUMERIC=C printf '$%.2f/$%.2f' "$today_cost" "$total_cost")
+            cost=$(LC_NUMERIC=C printf '$%.2f [$%.0f]' "$today_cost" "$total_cost")
         fi
         printf '%s' "$cost" > "$cache"
     fi
