@@ -137,7 +137,9 @@ render_cost() {
         read -r today_cost total_cost < <(
             uvx agentsview usage daily --agent claude --json 2>/dev/null |
             jq -r --arg d "$(date +%Y-%m-%d)" \
-                '[([.daily[] | select(.date == $d) | .totalCost] | add // 0), (.totals.totalCost // 0)] | @tsv' 2>/dev/null
+                'def dollars: if type == "object" then (.microdollars // 0) / 1000000 else (. // 0) end;
+                 [([.daily[] | select(.date == $d) | .totalCost | dollars] | add // 0),
+                  (.totals.totalCost | dollars)] | @tsv' 2>/dev/null
         )
         if [[ -n "$total_cost" ]]; then
             cost=$(LC_NUMERIC=C printf '$%.2f [$%.0f]' "$today_cost" "$total_cost")

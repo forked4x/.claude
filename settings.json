@@ -1,7 +1,4 @@
 {
-  "skipDangerousModePermissionPrompt": true,
-  "remoteControlAtStartup": true,
-  "agentPushNotifEnabled": true,
   "cleanupPeriodDays": 1000,
   "permissions": {
     "defaultMode": "plan"
@@ -25,5 +22,10 @@
         "repo": "anthropics/claude-code"
       }
     }
-  }
+  },
+  "effortLevel": "high",
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true
 }
