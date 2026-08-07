@@ -1,7 +1,15 @@
 {
   "cleanupPeriodDays": 1000,
   "permissions": {
-    "defaultMode": "plan"
+    "defaultMode": "plan",
+    "deny": [
+      "Read(~/Desktop/**)",
+      "Read(~/Documents/**)",
+      "Read(~/Library/**)",
+      "Read(~/Pictures/**)",
+      "Read(~/Movies/**)",
+      "Read(~/Music/**)"
+    ]
   },
   "statusLine": {
     "type": "command",
