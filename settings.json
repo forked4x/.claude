@@ -1,7 +1,9 @@
 {
   "cleanupPeriodDays": 1000,
   "permissions": {
-    "defaultMode": "plan",
+    "ask": [
+      "mcp__tableplus__execute_query"
+    ],
     "deny": [
       "Read(~/Desktop/**)",
       "Read(~/Documents/**)",
@@ -9,7 +11,8 @@
       "Read(~/Pictures/**)",
       "Read(~/Movies/**)",
       "Read(~/Music/**)"
-    ]
+    ],
+    "defaultMode": "plan"
   },
   "statusLine": {
     "type": "command",
@@ -32,9 +35,14 @@
     }
   },
   "effortLevel": "high",
+  "promptSuggestionEnabled": false,
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true,
-  "promptSuggestionEnabled": false
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    }
+  }
 }
